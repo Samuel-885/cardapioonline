@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Painel do Restaurante</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- Tela de login -->
+  <div id="tela-login">
+    <div id="login-box">
+      <h1>Painel Admin</h1>
+      <p>Acesso restrito ao proprietário</p>
+      <input type="email" id="login-email" placeholder="E-mail" />
+      <input type="password" id="login-senha" placeholder="Senha" />
+      <button onclick="fazerLogin()">Entrar</button>
+      <p id="login-erro"></p>
+    </div>
+  </div>
+
+  <!-- Painel principal (oculto até logar) -->
+  <div id="painel" class="hidden">
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <h2 id="sidebar-nome">Restaurante</h2>
+        <button class="nav-btn ativo" onclick="mostrarAba('pedidos', this)">Pedidos</button>
+        <button class="nav-btn" onclick="mostrarAba('produtos', this)">Produtos</button>
+        <button class="nav-btn" onclick="mostrarAba('grupos', this)">Grupos de Adicionais</button>
+        <button class="nav-btn" onclick="mostrarAba('categorias', this)">Categorias</button>
+        <button class="nav-btn" onclick="mostrarAba('frete', this)">Regiões de Frete</button>
+        <button class="nav-btn" onclick="mostrarAba('config', this)">Configurações</button>
+        <button id="btn-sair" onclick="sair()">Sair</button>
+    </nav>
+
+    <!-- Conteúdo -->
+    <main id="conteudo">
+
+      <!-- Aba Pedidos -->
+      <div id="aba-pedidos" class="aba">
+        <h2>Pedidos recebidos</h2>
+        <div id="filtros-pedido">
+          <button class="filtro-btn ativo" onclick="filtrarPedidos('pendente', this)">Pendentes</button>
+          <button class="filtro-btn" onclick="filtrarPedidos('confirmado', this)">Confirmados</button>
+          <button class="filtro-btn" onclick="filtrarPedidos('cancelado', this)">Cancelados</button>
+          <button class="filtro-btn" onclick="filtrarPedidos('todos', this)">Todos</button>
+        </div>
+        <div id="lista-pedidos"></div>
+      </div>
+
+      <!-- Aba Produtos -->
+      <div id="aba-produtos" class="aba hidden">
+        <div class="aba-header">
+          <h2>Produtos</h2>
+          <button class="btn-primario" onclick="abrirFormProduto()">+ Novo produto</button>
+        </div>
+        <div id="lista-produtos"></div>
+      </div>
+
+      <!-- Aba Grupos de Adicionais -->
+        <div id="aba-grupos" class="aba hidden">
+        <div class="aba-header">
+            <h2>Grupos de Adicionais</h2>
+            <button class="btn-primario" onclick="abrirFormGrupo()">+ Novo grupo</button>
+        </div>
+        <p style="color:#888;font-size:14px;margin-bottom:20px">
+            Crie grupos reutilizáveis (ex: "Adicionais Hambúrguer") e vincule a vários produtos.
+        </p>
+        <div id="lista-grupos"></div>
+        </div>
+
+      <!-- Aba Categorias -->
+      <div id="aba-categorias" class="aba hidden">
+        <div class="aba-header">
+          <h2>Categorias</h2>
+          <button class="btn-primario" onclick="abrirFormCategoria()">+ Nova categoria</button>
+        </div>
+        <div id="lista-categorias"></div>
+      </div>
+
+      <!-- Aba Frete -->
+      <div id="aba-frete" class="aba hidden">
+        <div class="aba-header">
+          <h2>Regiões de Frete</h2>
+          <button class="btn-primario" onclick="abrirFormFrete()">+ Nova região</button>
+        </div>
+        <div id="lista-frete"></div>
+      </div>
+
+      <!-- Aba Config -->
+      <div id="aba-config" class="aba hidden">
+        <h2>Configurações do restaurante</h2>
+        <div id="form-config">
+          <label>Nome do restaurante</label>
+          <input type="text" id="config-nome" />
+          <label>WhatsApp (só números, com DDD e 55)</label>
+          <input type="text" id="config-whatsapp" placeholder="5531999999999" />
+          <label>Horário de funcionamento</label>
+          <input type="text" id="config-horario" placeholder="Seg–Sex: 18h às 23h" />
+          <label>Mensagem de boas-vindas</label>
+          <input type="text" id="config-mensagem" />
+          <label>URL do logo</label>
+          <input type="text" id="config-logo" placeholder="https://..." />
+          <button class="btn-primario" onclick="salvarConfig()">Salvar configurações</button>
+          <p id="config-feedback"></p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal genérico para formulários -->
+  <div id="modal-admin-overlay" class="hidden" onclick="fecharModalAdmin(event)">
+    <div id="modal-admin">
+      <button onclick="fecharModalAdmin()" id="modal-admin-fechar">✕</button>
+      <div id="modal-admin-conteudo"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+
+</body>
+</html>

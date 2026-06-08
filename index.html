@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cardápio</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header id="header">
+    <img id="logo" src="img/logo.png" alt="Logo" />
+    <div id="header-info">
+      <h1 id="nome-restaurante">Carregando...</h1>
+      <p id="horario-restaurante"></p>
+    </div>
+  </header>
+
+  <!-- Barra de categorias -->
+  <nav id="categorias-nav">
+    <div id="categorias-lista"></div>
+  </nav>
+
+  <!-- Grid de produtos -->
+  <main id="produtos-grid"></main>
+
+  <!-- Botão flutuante do carrinho -->
+  <button id="btn-carrinho" onclick="abrirCarrinho()">
+    <span id="carrinho-icone">🛒</span>
+    <span id="carrinho-qtd">0</span> itens ·
+    <span id="carrinho-total">R$ 0,00</span>
+  </button>
+
+  <!-- Modal do produto -->
+  <div id="modal-overlay" class="hidden" onclick="fecharModal(event)">
+    <div id="modal">
+      <button id="modal-fechar" onclick="fecharModal()">✕</button>
+      <img id="modal-imagem" src="" alt="" />
+      <div id="modal-corpo">
+        <h2 id="modal-nome"></h2>
+        <p id="modal-descricao"></p>
+        <p id="modal-preco"></p>
+        <div id="modal-adicionais"></div>
+        <label for="modal-obs">Observação:</label>
+        <textarea id="modal-obs" placeholder="Ex: sem cebola, ponto da carne..."></textarea>
+        <div id="modal-quantidade">
+          <button onclick="mudarQtd(-1)">−</button>
+          <span id="qtd-valor">1</span>
+          <button onclick="mudarQtd(1)">+</button>
+        </div>
+        <button id="btn-adicionar">Adicionar ao carrinho</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel do carrinho -->
+  <div id="carrinho-overlay" class="hidden" onclick="fecharCarrinho(event)">
+    <div id="carrinho-painel">
+      <button id="carrinho-fechar" onclick="fecharCarrinho()">✕</button>
+      <h2>Seu pedido</h2>
+      <div id="carrinho-itens"></div>
+      <div id="carrinho-checkout">
+        <input type="text" id="cliente-nome" placeholder="Seu nome" />
+        <input type="tel" id="cliente-whatsapp" placeholder="Seu WhatsApp (com DDD)" />
+        <input type="text" id="cliente-endereco" placeholder="Seu endereço completo" />
+        <select id="cliente-regiao">
+          <option value="">Selecione sua região</option>
+        </select>
+        <p id="frete-info"></p>
+        <p id="total-final"></p>
+        <button id="btn-finalizar" onclick="finalizarPedido()">
+          Finalizar pelo WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/cardapio.js"></script>
+  <script type="module" src="js/modal.js"></script>
+  <script type="module" src="js/carrinho.js"></script>
+  <script type="module" src="js/checkout.js"></script>
+
+</body>
+</html>
