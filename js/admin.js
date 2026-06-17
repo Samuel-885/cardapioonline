@@ -29,6 +29,7 @@ async function verificarSessao() {
 function mostrarPainel() {
   document.getElementById('tela-login').classList.add('hidden')
   document.getElementById('painel').classList.remove('hidden')
+  iniciarNotificacoes()
   carregarPedidos('pendente')
 }
 
@@ -49,8 +50,67 @@ window.mostrarAba = function(aba, btn) {
 }
 
 // ==================== PEDIDOS ====================
+// ==================== PEDIDOS ====================
 
 let statusAtual = 'pendente'
+let dataAtual = new Date().toISOString().split('T')[0]
+let audioNotificacao = null
+let ultimoPedidoId = null
+
+function iniciarNotificacoes() {
+  // Cria o áudio de notificação (beep simples via Web Audio API)
+  const AudioContext = window.AudioContext || window.webkitAudioContext
+  if (!AudioContext) return
+
+  window._audioCtx = new AudioContext()
+
+  // Toca um som de notificação
+  window.tocarNotificacao = function() {
+    const ctx = window._audioCtx
+    const oscillator = ctx.createOscillator()
+    const gainNode = ctx.createGain()
+
+    oscillator.connect(gainNode)
+    gainNode.connect(ctx.destination)
+
+    oscillator.type = 'sine'
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime)
+    oscillator.frequency.setValueAtTime(660, ctx.currentTime + 0.1)
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime + 0.2)
+
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime)
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4)
+
+    oscillator.start(ctx.currentTime)
+    oscillator.stop(ctx.currentTime + 0.4)
+  }
+
+  // Verifica novos pedidos a cada 30 segundos
+  setInterval(async () => {
+    const { data } = await supabase
+      .from('pedidos')
+      .select('id')
+      .eq('status', 'pendente')
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    if (data && data.length > 0 && data[0].id !== ultimoPedidoId) {
+      if (ultimoPedidoId !== null) {
+        window.tocarNotificacao()
+        document.title = '🔔 Novo pedido! — Admin'
+        setTimeout(() => document.title = 'Painel Admin', 5000)
+      }
+      ultimoPedidoId = data[0].id
+    }
+  }, 30000)
+
+  // Inicializa o ID atual para não tocar ao abrir
+  supabase.from('pedidos').select('id').eq('status', 'pendente')
+    .order('created_at', { ascending: false }).limit(1)
+    .then(({ data }) => {
+      ultimoPedidoId = data?.[0]?.id || null
+    })
+}
 
 window.filtrarPedidos = function(status, btn) {
   statusAtual = status
@@ -59,8 +119,30 @@ window.filtrarPedidos = function(status, btn) {
   carregarPedidos(status)
 }
 
+window.limparFiltroData = function() {
+  dataAtual = new Date().toISOString().split('T')[0]
+  document.getElementById('input-data').value = dataAtual
+  carregarPedidos(statusAtual)
+}
+
 async function carregarPedidos(status) {
-  let query = supabase.from('pedidos').select('*').order('created_at', { ascending: false })
+  const inputData = document.getElementById('input-data')
+
+  // Seta a data no input se ainda não estiver
+  if (!inputData.value) inputData.value = dataAtual
+  dataAtual = inputData.value
+
+  // Início e fim do dia selecionado
+  const inicioDia = new Date(dataAtual + 'T00:00:00-03:00').toISOString()
+  const fimDia = new Date(dataAtual + 'T23:59:59-03:00').toISOString()
+
+  let query = supabase
+    .from('pedidos')
+    .select('*')
+    .gte('created_at', inicioDia)
+    .lte('created_at', fimDia)
+    .order('created_at', { ascending: false })
+
   if (status !== 'todos') query = query.eq('status', status)
 
   const { data: pedidos } = await query
@@ -80,7 +162,8 @@ async function carregarPedidos(status) {
 
     const badges = {
       pendente: '<span class="badge badge-pendente">Pendente</span>',
-      confirmado: '<span class="badge badge-confirmado">Confirmado</span>',
+      preparando: '<span class="badge badge-preparando">Preparando</span>',
+      confirmado: '<span class="badge badge-confirmado">Enviado</span>',
       cancelado: '<span class="badge badge-cancelado">Cancelado</span>'
     }
 
@@ -106,6 +189,12 @@ async function carregarPedidos(status) {
           </button>
           <button class="btn-cancelar" onclick="cancelarPedido('${pedido.id}')">Cancelar</button>
         ` : ''}
+        ${pedido.status === 'preparando' ? `
+          <button class="btn-confirmar" onclick="enviarPedido('${pedido.id}')">
+            Marcar como enviado
+          </button>
+          <button class="btn-cancelar" onclick="cancelarPedido('${pedido.id}')">Cancelar</button>
+        ` : ''}
         ${pedido.status === 'confirmado' ? `
           <button class="btn-cancelar" onclick="cancelarPedido('${pedido.id}')">Cancelar pedido</button>
         ` : ''}
@@ -114,15 +203,23 @@ async function carregarPedidos(status) {
     `
     lista.appendChild(card)
   })
+
+  // Listener para mudança de data
+  inputData.onchange = () => carregarPedidos(statusAtual)
 }
 
 window.confirmarPedido = async function(id, whatsappCliente, nomeCliente, total) {
-  await supabase.from('pedidos').update({ status: 'confirmado' }).eq('id', id)
+  await supabase.from('pedidos').update({ status: 'preparando' }).eq('id', id)
 
   const mensagem = `Olá ${nomeCliente}! 😊\n\nSeu pedido foi *confirmado* e já está sendo preparado!\n\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\nQualquer dúvida é só chamar. Obrigado pela preferência! 🍔`
   const url = `https://wa.me/55${whatsappCliente.replace(/\D/g,'')}?text=${encodeURIComponent(mensagem)}`
   window.open(url, '_blank')
 
+  carregarPedidos(statusAtual)
+}
+
+window.enviarPedido = async function(id) {
+  await supabase.from('pedidos').update({ status: 'confirmado' }).eq('id', id)
   carregarPedidos(statusAtual)
 }
 

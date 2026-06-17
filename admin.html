@@ -43,9 +43,15 @@
         <h2>Pedidos recebidos</h2>
         <div id="filtros-pedido">
           <button class="filtro-btn ativo" onclick="filtrarPedidos('pendente', this)">Pendentes</button>
-          <button class="filtro-btn" onclick="filtrarPedidos('confirmado', this)">Confirmados</button>
+          <button class="filtro-btn" onclick="filtrarPedidos('preparando', this)">Preparando</button>
+          <button class="filtro-btn" onclick="filtrarPedidos('confirmado', this)">Enviados</button>
           <button class="filtro-btn" onclick="filtrarPedidos('cancelado', this)">Cancelados</button>
           <button class="filtro-btn" onclick="filtrarPedidos('todos', this)">Todos</button>
+        </div>
+        <div id="filtro-data" style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <label style="font-size:14px;color:#555;font-weight:600">Data:</label>
+          <input type="date" id="input-data" style="padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px" />
+          <button onclick="limparFiltroData()" style="background:none;border:1px solid #ddd;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer">Hoje</button>
         </div>
         <div id="lista-pedidos"></div>
       </div>

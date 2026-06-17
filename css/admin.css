@@ -195,6 +195,7 @@ body {
 }
 
 .badge-pendente { background: #fff3cd; color: #856404; }
+.badge-preparando { background: #cfe2ff; color: #084298; }
 .badge-confirmado { background: #d1e7dd; color: #0f5132; }
 .badge-cancelado { background: #f8d7da; color: #842029; }
 
@@ -357,3 +358,4 @@ body {
   cursor: pointer;
   margin-top: 20px;
 }
+
