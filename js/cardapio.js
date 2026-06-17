@@ -75,10 +75,11 @@ async function carregarProdutos() {
 
     card.innerHTML = `
       ${produto.imagem_url
-        ? `<img src="${produto.imagem_url}" alt="${produto.nome}" />`
-        : `<div style="height:130px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:36px;">🍽️</div>`
+        ? `<img src="${produto.imagem_url}" alt="${produto.nome}" loading="lazy" />`
+        : `<div class="produto-card-placeholder">🍔</div>`
       }
       <div class="produto-card-info">
+        ${temPromocao ? `<span class="produto-card-badge">OFERTA</span>` : ''}
         <p class="produto-card-nome">${produto.nome}</p>
         ${temPromocao ? `<p class="produto-card-preco-antigo">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>` : ''}
         <p class="produto-card-preco">R$ ${precoExibido.toFixed(2).replace('.', ',')}</p>
