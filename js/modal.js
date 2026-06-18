@@ -1,5 +1,17 @@
 import { supabase } from './supabase.js'
 
+let _scrollY = 0
+function lockScroll() {
+  _scrollY = window.scrollY
+  document.body.style.top = `-${_scrollY}px`
+  document.body.classList.add('modal-aberto')
+}
+function unlockScroll() {
+  document.body.classList.remove('modal-aberto')
+  document.body.style.top = ''
+  window.scrollTo({ top: _scrollY, behavior: 'instant' })
+}
+
 let quantidadeAtual = 1
 let produtoAtual = null
 let adicionaisSelecionados = []
@@ -77,7 +89,7 @@ window.abrirModal = async function(produto) {
     const overlay = document.getElementById('modal-overlay')
     overlay.classList.remove('hidden')
     setTimeout(() => overlay.classList.add('visivel'), 10)
-    document.body.style.overflow = 'hidden'
+    lockScroll()
 }
 
 function atualizarAdicionais() {
@@ -102,7 +114,7 @@ window.fecharModal = function(event) {
   overlay.classList.remove('visivel')
   setTimeout(() => {
     overlay.classList.add('hidden')
-    document.body.style.overflow = ''
+    unlockScroll()
   }, 280)
 }
 

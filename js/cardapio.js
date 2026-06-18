@@ -75,7 +75,7 @@ async function carregarCategorias(categorias) {
   // Botão Ofertas
   const btnOfertas = document.createElement('button')
   btnOfertas.className = 'categoria-btn ativo'
-  btnOfertas.textContent = '🔥 Ofertas'
+  btnOfertas.textContent = 'Ofertas'
   btnOfertas.dataset.target = 'secao-ofertas'
   btnOfertas.onclick = () => rolarParaSecao('secao-ofertas', btnOfertas)
   lista.appendChild(btnOfertas)
@@ -83,7 +83,7 @@ async function carregarCategorias(categorias) {
   // Botão Mais Pedidos
   const btnMaisPedidos = document.createElement('button')
   btnMaisPedidos.className = 'categoria-btn'
-  btnMaisPedidos.textContent = '⭐ Favoritos'
+  btnMaisPedidos.textContent = 'Favoritos'
   btnMaisPedidos.dataset.target = 'secao-mais-pedidos'
   btnMaisPedidos.onclick = () => rolarParaSecao('secao-mais-pedidos', btnMaisPedidos)
   lista.appendChild(btnMaisPedidos)

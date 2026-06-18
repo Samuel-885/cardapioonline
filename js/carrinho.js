@@ -1,5 +1,17 @@
 import { supabase } from './supabase.js'
 
+let _scrollY = 0
+function lockScroll() {
+  _scrollY = window.scrollY
+  document.body.style.top = `-${_scrollY}px`
+  document.body.classList.add('modal-aberto')
+}
+function unlockScroll() {
+  document.body.classList.remove('modal-aberto')
+  document.body.style.top = ''
+  window.scrollTo({ top: _scrollY, behavior: 'instant' })
+}
+
 function getCarrinho() {
   const raw = JSON.parse(localStorage.getItem('carrinho') || '[]')
   return Array.isArray(raw) ? raw : (Array.isArray(raw.carrinho) ? raw.carrinho : [])
@@ -73,7 +85,7 @@ window.abrirCarrinho = function() {
   const overlay = document.getElementById('carrinho-overlay')
     overlay.classList.remove('hidden')
     setTimeout(() => overlay.classList.add('visivel'), 10)
-    document.body.style.overflow = 'hidden'
+    lockScroll()
 }
 
 window.fecharCarrinho = function(event) {
@@ -82,7 +94,7 @@ window.fecharCarrinho = function(event) {
   overlay.classList.remove('visivel')
   setTimeout(() => {
     overlay.classList.add('hidden')
-    document.body.style.overflow = ''
+    unlockScroll()
   }, 280)
 }
 
