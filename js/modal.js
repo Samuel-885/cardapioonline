@@ -73,8 +73,11 @@ window.abrirModal = async function(produto) {
   document.getElementById('btn-adicionar').onclick = adicionarAoCarrinho
 
   // Abre o modal
-  document.getElementById('modal-overlay').classList.remove('hidden')
-  document.body.style.overflow = 'hidden'
+  // Abre o modal
+    const overlay = document.getElementById('modal-overlay')
+    overlay.classList.remove('hidden')
+    setTimeout(() => overlay.classList.add('visivel'), 10)
+    document.body.style.overflow = 'hidden'
 }
 
 function atualizarAdicionais() {
@@ -95,8 +98,12 @@ window.mudarQtd = function(delta) {
 
 window.fecharModal = function(event) {
   if (event && event.target !== document.getElementById('modal-overlay')) return
-  document.getElementById('modal-overlay').classList.add('hidden')
-  document.body.style.overflow = ''
+  const overlay = document.getElementById('modal-overlay')
+  overlay.classList.remove('visivel')
+  setTimeout(() => {
+    overlay.classList.add('hidden')
+    document.body.style.overflow = ''
+  }, 280)
 }
 
 function adicionarAoCarrinho() {
@@ -123,7 +130,11 @@ function adicionarAoCarrinho() {
   // Atualiza o botão flutuante
   window.atualizarBotaoCarrinho()
 
-  // Fecha o modal
-  document.getElementById('modal-overlay').classList.add('hidden')
-  document.body.style.overflow = ''
+// Fecha o modal
+  const overlay = document.getElementById('modal-overlay')
+  overlay.classList.remove('visivel')
+  setTimeout(() => {
+    overlay.classList.add('hidden')
+    document.body.style.overflow = ''
+  }, 280)
 }

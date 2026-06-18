@@ -12,17 +12,23 @@ window.atualizarBotaoCarrinho = function() {
 
   if (carrinho.length === 0) {
     btn.style.display = 'none'
+    if (window.atualizarContadores) window.atualizarContadores() // ← adicione
     return
   }
 
   const total = carrinho.reduce((s, i) => s + i.preco * i.quantidade, 0)
   const qtd = carrinho.reduce((s, i) => s + i.quantidade, 0)
 
-  document.getElementById('carrinho-qtd').textContent = qtd
+  document.getElementById('carrinho-qtd-badge').textContent = qtd
   document.getElementById('carrinho-total').textContent =
     'R$ ' + total.toFixed(2).replace('.', ',')
 
-  btn.style.display = 'block'
+  btn.style.display = 'flex'
+  if (window.atualizarContadores) window.atualizarContadores() // ← e aqui
+  
+  btn.classList.remove('pulsar')
+  void btn.offsetWidth
+  btn.classList.add('pulsar')
 }
 
 window.abrirCarrinho = function() {
@@ -64,14 +70,20 @@ window.abrirCarrinho = function() {
   atualizarTotalCarrinho()
   carregarRegioes()
 
-  document.getElementById('carrinho-overlay').classList.remove('hidden')
-  document.body.style.overflow = 'hidden'
+  const overlay = document.getElementById('carrinho-overlay')
+    overlay.classList.remove('hidden')
+    setTimeout(() => overlay.classList.add('visivel'), 10)
+    document.body.style.overflow = 'hidden'
 }
 
 window.fecharCarrinho = function(event) {
   if (event && event.target !== document.getElementById('carrinho-overlay')) return
-  document.getElementById('carrinho-overlay').classList.add('hidden')
-  document.body.style.overflow = ''
+  const overlay = document.getElementById('carrinho-overlay')
+  overlay.classList.remove('visivel')
+  setTimeout(() => {
+    overlay.classList.add('hidden')
+    document.body.style.overflow = ''
+  }, 280)
 }
 
 window.removerItem = function(index) {

@@ -8,27 +8,77 @@
 </head>
 <body>
 
-  <!-- Cabeçalho -->
+  <!-- Header -->
   <header id="header">
     <img id="logo" src="img/logo.png" alt="Logo" />
     <div id="header-info">
       <h1 id="nome-restaurante">Carregando...</h1>
       <p id="horario-restaurante"></p>
     </div>
-  </header>
+    <button id="btn-busca" onclick="toggleBusca()">🔍</button>
+    
+  </header> 
 
-  <!-- Barra de categorias -->
-  <nav id="categorias-nav">
-    <div id="categorias-lista"></div>
-  </nav>
+  <!-- Busca expansível -->
+  <div id="busca-wrapper">
+    <div id="busca-container">
+      <span id="busca-icone">🔍</span>
+      <input type="text" id="busca-input" placeholder="Buscar no cardápio..." />
+      <button id="busca-limpar" onclick="limparBusca()">✕</button>
+    </div>
+  </div>
 
-  <!-- Grid de produtos -->
-  <main id="produtos-grid"></main>
+  <!-- Resultados -->
+  <div id="busca-resultados" class="hidden">
+    <div id="busca-resultados-grid"></div>
+  </div>
+
+  <!-- Banner fechado -->
+  <div id="banner-fechado" class="hidden">
+    <span>🔒</span>
+    <div>
+      <strong>Restaurante fechado</strong>
+      <p id="banner-horario-texto"></p>
+    </div>
+  </div>
+
+  
+
+  <!-- Conteúdo principal -->
+  <div id="conteudo-principal">
+
+    <!-- Nav de categorias (sticky) -->
+    <nav id="categorias-nav">
+      <div id="categorias-lista"></div>
+    </nav>
+
+    <!-- Seção ofertas -->
+    <section id="secao-ofertas" class="hidden">
+      <div class="secao-header">
+        <span class="secao-tag">🔥 Ofertas</span>
+        <h2 class="secao-titulo">Promoções do dia</h2>
+      </div>
+      <div id="ofertas-grid"></div>
+    </section>
+
+    <!-- Seção mais pedidos -->
+    <section id="secao-mais-pedidos" class="hidden">
+      <div class="secao-header">
+        <span class="secao-tag">⭐ Favoritos</span>
+        <h2 class="secao-titulo">Mais pedidos</h2>
+      </div>
+      <div id="mais-pedidos-carrossel"></div>
+    </section>
+
+    <!-- Seções por categoria -->
+    <div id="secoes-categorias"></div>
+
+  </div>
 
   <!-- Botão flutuante do carrinho -->
   <button id="btn-carrinho" onclick="abrirCarrinho()" style="display:none">
     <span id="carrinho-icone">🛒</span>
-    <span id="carrinho-qtd">0</span>
+    <span id="carrinho-qtd-badge">0</span>
     <span id="carrinho-total">R$ 0,00</span>
   </button>
 
@@ -42,7 +92,7 @@
         <p id="modal-descricao"></p>
         <p id="modal-preco"></p>
         <div id="modal-adicionais"></div>
-        <label for="modal-obs">Observação:</label>
+        <label for="modal-obs">Observação</label>
         <textarea id="modal-obs" placeholder="Ex: sem cebola, ponto da carne..."></textarea>
         <div id="modal-quantidade">
           <button onclick="mudarQtd(-1)">−</button>
