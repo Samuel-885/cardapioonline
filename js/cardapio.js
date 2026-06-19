@@ -138,14 +138,18 @@ function criarCard(produto, classes = '') {
   card.dataset.id = produto.id
 
   card.innerHTML = `
-    ${produto.imagem_url
-      ? `<img src="${produto.imagem_url}" alt="${produto.nome}" loading="lazy" />`
-      : `<div class="produto-card-placeholder">🍔</div>`
-    }
+    <div class="produto-card-img-wrapper">
+      ${produto.imagem_url
+        ? `<img src="${produto.imagem_url}" alt="${produto.nome}" loading="lazy" />`
+        : `<div class="produto-card-placeholder">🍔</div>`
+      }
+      ${temPromocao ? `<span class="produto-card-oferta-badge">% OFERTA</span>` : ''}
+    </div>
     <div class="produto-card-info">
-      ${temPromocao ? `<span class="produto-card-badge">OFERTA</span>` : ''}
       <p class="produto-card-nome">${produto.nome}</p>
-      ${temPromocao ? `<p class="produto-card-preco-antigo">R$ ${produto.preco.toFixed(2).replace('.', ',')}</p>` : ''}
+      <span class="produto-card-preco-antigo ${temPromocao ? 'visivel' : ''}">
+        ${temPromocao ? `R$ ${produto.preco.toFixed(2).replace('.', ',')}` : '&nbsp;'}
+      </span>
       <p class="produto-card-preco">R$ ${precoExibido.toFixed(2).replace('.', ',')}</p>
     </div>
   `
@@ -273,9 +277,13 @@ window.toggleBusca = function() {
   const wrapper = document.getElementById('busca-wrapper')
   buscaAberta = !buscaAberta
   wrapper.classList.toggle('busca-aberta', buscaAberta)
+
   if (buscaAberta) {
+    // Mostra header e nav antes de abrir busca
+    headerEl.style.transform = 'translateY(0)'
+    navEl.style.transform = 'translateY(0)'
+    headerLastScroll = window.scrollY
     setTimeout(() => document.getElementById('busca-input').focus(), 300)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   } else {
     limparBusca()
   }
@@ -356,6 +364,41 @@ window.atualizarContadores = function() {
   })
 }
 
+// ===== HEADER AUTO-HIDE =====
+// ===== HEADER AUTO-HIDE =====
+let headerLastScroll = 0
+let headerTicking = false
+const headerEl = document.getElementById('header')
+const navEl = document.getElementById('categorias-nav')
+
+window.addEventListener('scroll', () => {
+  if (headerTicking) return
+  headerTicking = true
+
+  requestAnimationFrame(() => {
+    const current = window.scrollY
+    const diff = current - headerLastScroll
+
+    if (current <= 80) {
+      headerEl.style.transform = 'translateY(0)'
+      navEl.style.transform = 'translateY(0)'
+    } else if (diff > 6) {
+      headerEl.style.transform = 'translateY(-100%)'
+      navEl.style.transform = 'translateY(-100%)'
+      if (buscaAberta) {
+        buscaAberta = false
+        document.getElementById('busca-wrapper').classList.remove('busca-aberta')
+        limparBusca()
+      }
+    } else if (diff < -6) {
+      headerEl.style.transform = 'translateY(0)'
+      navEl.style.transform = 'translateY(0)'
+    }
+
+    headerLastScroll = current
+    headerTicking = false
+  })
+}, { passive: true })
 
 // ===== INIT =====
 carregarConfig()

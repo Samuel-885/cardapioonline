@@ -53,6 +53,7 @@ body.modal-aberto {
   position: sticky;
   top: 0;
   z-index: 50;
+  transition: transform 0.3s ease;
 }
 
 #logo {
@@ -224,6 +225,7 @@ body.modal-aberto {
   z-index: 40;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
+  transition: transform 0.3s ease;
 }
 
 #categorias-nav::-webkit-scrollbar { display: none; }
@@ -373,9 +375,9 @@ body.modal-aberto {
 }
 
 .oferta-preco {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--brand);
 }
 
@@ -441,9 +443,9 @@ body.modal-aberto {
 }
 
 .mp-card-preco {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--brand);
 }
 
@@ -516,28 +518,65 @@ body.modal-aberto {
 }
 
 .produto-card-info {
-  padding: 12px 14px 14px;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .produto-card-nome {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ink);
   line-height: 1.3;
   margin-bottom: 6px;
 }
 
+/* Linha do preço antigo — sempre reservada */
 .produto-card-preco-antigo {
   font-size: 11px;
   color: var(--ink-faint);
   text-decoration: line-through;
+  height: 14px;
+  display: block;
+  margin-bottom: 1px;
+  visibility: hidden; /* ocupa espaço mas fica invisível quando vazio */
 }
 
+.produto-card-preco-antigo.visivel {
+  visibility: visible;
+}
+
+.produto-card-badge-vazio {
+  display: block;
+  height: 20px;
+  margin-bottom: 4px;
+}
+
+.produto-card-preco-antigo-vazio {
+  display: block;
+  height: 16px;
+  margin-bottom: 2px;
+}
+/* Remove classes antigas que não usamos mais */
+.produto-card-badge { display: none; }
+.produto-card-badge-vazio { display: none; }
+.produto-card-preco-antigo-vazio { display: none; }
+
 .produto-card-preco {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--brand);
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
+}
+.produto-card-img-wrapper {
+  position: relative;
+}
+
+.produto-card-img-wrapper img,
+.produto-card-img-wrapper .produto-card-placeholder {
+  display: block;
+  width: 100%;
 }
 
 .produto-card-badge {
@@ -548,9 +587,24 @@ body.modal-aberto {
   font-weight: 600;
   padding: 2px 7px;
   border-radius: 100px;
+  letter-spacing: 0.3px;
+  height: 20px;
   margin-bottom: 4px;
+}
+
+.produto-card-oferta-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: var(--brand);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
   letter-spacing: 0.3px;
 }
+
 
 /* Contador no card */
 .produto-card-contador {
@@ -699,9 +753,9 @@ body.modal-aberto {
 }
 
 #modal-preco {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--brand);
   margin-bottom: 20px;
 }
@@ -936,9 +990,9 @@ label[for="modal-obs"] {
 }
 
 #total-final {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink);
   padding: 4px 2px;
 }

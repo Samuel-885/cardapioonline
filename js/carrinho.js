@@ -3,12 +3,12 @@ import { supabase } from './supabase.js'
 let _scrollY = 0
 function lockScroll() {
   _scrollY = window.scrollY
-  document.body.style.top = `-${_scrollY}px`
-  document.body.classList.add('modal-aberto')
+  document.body.style.overflow = 'hidden'
+  document.body.style.touchAction = 'none'
 }
 function unlockScroll() {
-  document.body.classList.remove('modal-aberto')
-  document.body.style.top = ''
+  document.body.style.overflow = ''
+  document.body.style.touchAction = ''
   window.scrollTo({ top: _scrollY, behavior: 'instant' })
 }
 
