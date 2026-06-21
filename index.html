@@ -8,66 +8,84 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header id="header">
-    <img id="logo" src="img/logo.png" alt="Logo" />
-    <div id="header-info">
-      <h1 id="nome-restaurante">Carregando...</h1>
-      <p id="horario-restaurante"></p>
+  <!-- PERFIL DA LOJA (topo) -->
+  <div id="perfil-loja">
+    <div id="perfil-banner">
+      <img id="perfil-banner-img" src="" alt="" />
+      <div id="perfil-banner-overlay"></div>
     </div>
-    <button id="btn-busca" onclick="toggleBusca()">🔍</button>
-    
-  </header> 
+    <div id="perfil-info">
+      <img id="perfil-logo" src="img/logo.png" alt="Logo" />
+      <h1 id="perfil-nome">Carregando...</h1>
+      <div id="perfil-status"></div>
+      <div id="perfil-meta"></div>
+      <button id="perfil-btn-info" onclick="abrirInfoLoja()">ⓘ Informações</button>
+    </div>
+  </div>
 
-  <!-- Busca expansível -->
+  <!-- HEADER COMPACTO (aparece no scroll) -->
+  <header id="header" class="header-oculto">
+    <img id="header-logo" src="img/logo.png" alt="Logo" />
+    <span id="header-nome">Carregando...</span>
+    <div id="header-acoes">
+      <button id="btn-busca" onclick="toggleBusca()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button id="btn-compartilhar" onclick="compartilhar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- BUSCA EXPANSÍVEL -->
   <div id="busca-wrapper">
     <div id="busca-container">
-      <span id="busca-icone">🔍</span>
-      <input type="text" id="busca-input" placeholder="Buscar no cardápio..." />
-      <button id="busca-limpar" onclick="limparBusca()">✕</button>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="busca-input" placeholder="O que você quer comer hoje?" />
+      <button id="busca-limpar" onclick="fecharBusca()">✕</button>
     </div>
   </div>
 
-  <!-- Resultados -->
-  <div id="busca-resultados" class="hidden">
-    <div id="busca-resultados-grid"></div>
-  </div>
-
-  <!-- Banner fechado -->
+  <!-- BANNER FECHADO -->
   <div id="banner-fechado" class="hidden">
     <span>🔒</span>
     <div>
-      <strong>Restaurante fechado</strong>
+      <strong>Restaurante fechado no momento</strong>
       <p id="banner-horario-texto"></p>
     </div>
   </div>
 
-  
+  <!-- MODAL INFORMAÇÕES DA LOJA -->
+  <div id="info-overlay" class="hidden" onclick="fecharInfoLoja(event)">
+    <div id="info-painel">
+      <div id="info-header">
+        <h3>Informações</h3>
+        <button onclick="fecharInfoLoja()">✕</button>
+      </div>
+      <div id="info-conteudo"></div>
+    </div>
+  </div>
 
-  <!-- Conteúdo principal -->
+  <!-- CONTEÚDO PRINCIPAL -->
   <div id="conteudo-principal">
 
-    <!-- Nav de categorias (sticky) -->
+    <!-- Nav categorias -->
     <nav id="categorias-nav">
       <div id="categorias-lista"></div>
     </nav>
 
+    <!-- Resultados busca -->
+    <div id="busca-resultados" class="hidden">
+      <p id="busca-label"></p>
+      <div id="busca-resultados-lista"></div>
+    </div>
+
     <!-- Seção ofertas -->
     <section id="secao-ofertas" class="hidden">
       <div class="secao-header">
-        <span class="secao-tag">Ofertas</span>
-        <h2 class="secao-titulo">Promoções do dia</h2>
+        <span class="secao-tag">🔥 Promoções</span>
       </div>
-      <div id="ofertas-grid"></div>
-    </section>
-
-    <!-- Seção mais pedidos -->
-    <section id="secao-mais-pedidos" class="hidden">
-      <div class="secao-header">
-        <span class="secao-tag">Favoritos</span>
-        <h2 class="secao-titulo">Mais pedidos</h2>
-      </div>
-      <div id="mais-pedidos-carrossel"></div>
+      <div id="ofertas-carrossel"></div>
     </section>
 
     <!-- Seções por categoria -->
@@ -75,14 +93,14 @@
 
   </div>
 
-  <!-- Botão flutuante do carrinho -->
+  <!-- Botão flutuante carrinho -->
   <button id="btn-carrinho" onclick="abrirCarrinho()" style="display:none">
-    <span id="carrinho-icone">🛒</span>
+    <span>🛒</span>
     <span id="carrinho-qtd-badge">0</span>
     <span id="carrinho-total">R$ 0,00</span>
   </button>
 
-  <!-- Modal do produto -->
+  <!-- Modal produto -->
   <div id="modal-overlay" class="hidden" onclick="fecharModal(event)">
     <div id="modal">
       <button id="modal-fechar" onclick="fecharModal()">✕</button>
@@ -104,7 +122,7 @@
     </div>
   </div>
 
-  <!-- Painel do carrinho -->
+  <!-- Painel carrinho -->
   <div id="carrinho-overlay" class="hidden" onclick="fecharCarrinho(event)">
     <div id="carrinho-painel">
       <button id="carrinho-fechar" onclick="fecharCarrinho()">✕</button>
@@ -119,9 +137,7 @@
         </select>
         <p id="frete-info"></p>
         <p id="total-final"></p>
-        <button id="btn-finalizar" onclick="finalizarPedido()">
-          Finalizar pelo WhatsApp
-        </button>
+        <button id="btn-finalizar" onclick="finalizarPedido()">Finalizar pelo WhatsApp</button>
       </div>
     </div>
   </div>
@@ -130,6 +146,5 @@
   <script type="module" src="js/modal.js"></script>
   <script type="module" src="js/carrinho.js"></script>
   <script type="module" src="js/checkout.js"></script>
-
 </body>
 </html>

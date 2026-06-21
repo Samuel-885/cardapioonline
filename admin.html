@@ -101,14 +101,40 @@
         <div id="form-config">
           <label>Nome do restaurante</label>
           <input type="text" id="config-nome" />
+
           <label>WhatsApp (só números, com DDD e 55)</label>
           <input type="text" id="config-whatsapp" placeholder="5531999999999" />
+
           <label>Horário de funcionamento</label>
-          <input type="text" id="config-horario" placeholder="Seg–Sex: 18h às 23h" />
+          <input type="text" id="config-horario" placeholder="Seg–Sex: 18h às 23h | Sab–Dom: 12h às 23h" />
+
           <label>Mensagem de boas-vindas</label>
           <input type="text" id="config-mensagem" />
+
           <label>URL do logo</label>
           <input type="text" id="config-logo" placeholder="https://..." />
+
+          <label>URL do banner da loja</label>
+          <input type="text" id="config-banner" placeholder="https://..." />
+
+          <label>Endereço</label>
+          <input type="text" id="config-endereco" placeholder="Rua Exemplo, 123 - Bairro - Cidade" />
+
+          <label>Telefone</label>
+          <input type="text" id="config-telefone" placeholder="(31) 99999-9999" />
+
+          <label>Instagram (sem @)</label>
+          <input type="text" id="config-instagram" placeholder="nomedoperfil" />
+
+          <label>Facebook</label>
+          <input type="text" id="config-facebook" placeholder="facebook.com/pagina" />
+
+          <label>Pedido mínimo (R$)</label>
+          <input type="number" id="config-pedido-minimo" placeholder="0.00" step="0.01" />
+
+          <label>Tempo de entrega</label>
+          <input type="text" id="config-tempo-entrega" placeholder="30–45 min" />
+
           <button class="btn-primario" onclick="salvarConfig()">Salvar configurações</button>
           <p id="config-feedback"></p>
         </div>
